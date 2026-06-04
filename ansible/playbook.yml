@@ -1,1 +1,63 @@
+---
+- name: Configure Minecraft Server
+  hosts: minecraft
+  become: yes
 
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Java 25
+      apt:
+        name: openjdk-25-jdk-headless
+        state: present
+
+    - name: Download Minecraft server jar
+      get_url:
+        url: "https://piston-data.mojang.com/v1/objects/97ccd4c0ed3f81bbb7bfacddd1090b0c56f9bc51/server.jar"
+        dest: /home/ubuntu/server.jar
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Run server once to generate eula.txt
+      command: java -Xmx1G -Xms1G -jar /home/ubuntu/server.jar nogui
+      args:
+        chdir: /home/ubuntu
+      become_user: ubuntu
+      ignore_errors: yes
+
+    - name: Accept EULA
+      lineinfile:
+        path: /home/ubuntu/eula.txt
+        regexp: '^eula='
+        line: 'eula=true'
+
+    - name: Create systemd service file
+      copy:
+        dest: /etc/systemd/system/minecraft.service
+        content: |
+          [Unit]
+          Description=Minecraft Server
+          After=network.target
+
+          [Service]
+          User=ubuntu
+          WorkingDirectory=/home/ubuntu
+          ExecStart=java -Xmx1G -Xms1G -jar /home/ubuntu/server.jar nogui
+          ExecStop=/bin/kill -SIGINT $MAINPID
+          Restart=on-failure
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: Enable and start Minecraft service
+      systemd:
+        name: minecraft
+        enabled: yes
+        state: started
