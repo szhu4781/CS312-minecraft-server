@@ -18,12 +18,11 @@ server on AWS EC2 using Terraform and Ansible.
 - Configures and enables a systemd service for auto-start and proper shutdown
 
 ## Requirements
----
 | Tool | Version |
 |------|---------|
-| Terraform | >= 1.0 |
-| Ansible | >= 2.9 |
-| AWS CLI | >= 2.0 |
+| Terraform | 1.0 or greater |
+| Ansible | 2.9 or greater |
+| AWS CLI | 2.0 or greater |
 | nmap | any |
 
 ### Credentials
