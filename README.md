@@ -26,7 +26,26 @@ server on AWS EC2 using Terraform and Ansible.
 | nmap | any |
 
 ### Credentials
-- An active AWS Academy Learner Lab session
+- An AWS Academy account with an active Learner Lab session (start the lab if you haven't already)
 - AWS credentials configured at `~/.aws/credentials`:
+```
+[default]
+aws_access_key_id=YOUR_ACCESS_KEY
+aws_secret_access_key=YOUR_SECRET_KEY
+aws_session_token=YOUR_SESSION_TOKEN
+```
+- An existing AWS key pair (`.pem` file) for SSH access
 
+## Environment
+This project was developed and run from Ubuntu (WSL on Windows 10). Since Ansible doesn't natively support Windows, WSL or a Linux/macOS machine is recommended.
+
+## Pipeline
++------------------+       +-------------------+       +----------------------+
+|   Terraform      |  -->  |   Ansible         |  -->  |   Minecraft Server   |
+|                  |       |                   |       |                      |
+| - Security group |       | - Install Java 25 |       | - Running on port    |
+| - EC2 instance   |       | - Download jar    |       |   25565              |
+|                  |       | - Accept EULA     |       | - Auto-starts on     |
+|                  |       | - Setup systemd   |       |   reboot             |
++------------------+       +-------------------+       +----------------------+
 
