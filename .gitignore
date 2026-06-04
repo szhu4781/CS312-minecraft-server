@@ -1,0 +1,8 @@
+# Terraform
+./terraform
+*.tfstate
+*.tfstate.backuo
+*.tfvars
+
+# SSH keys
+*.pem
