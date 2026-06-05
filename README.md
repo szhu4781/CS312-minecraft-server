@@ -11,6 +11,7 @@ server on AWS EC2 using Terraform and Ansible.
 **Terraform** handles the infrastructure provisioning:
 - Creates an AWS security group with the necessary inbound rules
 - Provisions an EC2 instance (t4g.small, Ubuntu 24.04 LTS ARM)
+
 **Ansible** handles the server configuration:
 - Installs Java 25
 - Downloads the Minecraft server jar
@@ -52,7 +53,6 @@ This project was developed and run from Ubuntu (WSL on Windows 10). Since Ansibl
 +------------------+       +-------------------+       +----------------------+
 ```
 
-
 ## Commands
 ### 1. Configure AWS credentials
 Retrieve your credentials from the AWS Academy Learner Lab and paste them into
@@ -70,7 +70,7 @@ cd terraform
 terraform init
 terraform apply -var="key_name=<your-key-pair-name>"
 ```
-Note the public IP output at the end, you will need it for the next step. 
+Note the public IP output at the end; you will need it for the next step. 
 
 ### 3. Update the Ansible inventory
 Open `ansible/inventory.ini` and replace the IP address with the one output by Terraform:
@@ -86,12 +86,12 @@ cd ..
 ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
 ```
 
-### 5. Tear down infrastructure (when done)
+### 5. Tear down infrastructure - clean up
 ```
 cd terraform
 terraform destroy -var="key_name=<your-key-pair-name>"
 ```
-This step is required whenever you start a new instance or log out of your Ubuntu terminal. Each time you start a new instance, the previous public IP address will be inactive, and you will need to generate a new IP address by applying with Terraform (go back to step 2).
+Whenever you run `terraform destroy`, the previous public IP address will be inactive, and you will need to generate a new IP address by applying with Terraform (go back to step 2).
 
 ## Connecting to the Server
 Once the playbook completes, verify the server is reachable with nmap:
