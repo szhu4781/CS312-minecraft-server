@@ -41,12 +41,16 @@ aws_session_token=YOUR_SESSION_TOKEN
 This project was developed and run from Ubuntu (WSL on Windows 10). Since Ansible doesn't natively support Windows, WSL or a Linux/macOS machine is recommended.
 
 ## Pipeline Diagram
+```
++------------------+       +-------------------+       +----------------------+
 |   Terraform      |  -->  |   Ansible         |  -->  |   Minecraft Server   |
 |                  |       |                   |       |                      |
 | - Security group |       | - Install Java 25 |       | - Running on port    |
 | - EC2 instance   |       | - Download jar    |       |   25565              |
 |                  |       | - Accept EULA     |       | - Auto-starts on     |
 |                  |       | - Setup systemd   |       |   reboot             |
++------------------+       +-------------------+       +----------------------+
+```
 
 
 ## Commands
