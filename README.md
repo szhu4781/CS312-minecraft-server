@@ -91,14 +91,14 @@ ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
 cd terraform
 terraform destroy -var="key_name=<your-key-pair-name>"
 ```
-This step is required whenever you start a new instance or log out of your Ubuntu terminal. Each time you start up a new instance, the previous public IP address will be inactive and you will need to generate a new public IP address by applying with Terraform (go to back to step 2).
+This step is required whenever you start a new instance or log out of your Ubuntu terminal. Each time you start a new instance, the previous public IP address will be inactive, and you will need to generate a new IP address by applying with Terraform (go back to step 2).
 
 ## Connecting to the Server
 Once the playbook completes, verify the server is reachable with nmap:
 ```
 nmap -sV -Pn -p T:25565 <public_ip>
 ```
-You should see output confirming Minecraft is running on port 25565. You can also connect directly using the Minecraft Java Edition client by adding `<public_ip>` as a multiplayer server address.
+You should see output confirming Minecraft is running on port 25565. You can also connect directly using the Minecraft Java Edition client by adding `<public_ip>` as a multiplayer server address (`<public_ip>` would be the IP address you copied from the Terraform output).
 
 ## Resources
 - [Terraform AWS Provider Documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
