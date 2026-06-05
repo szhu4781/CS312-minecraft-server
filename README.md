@@ -18,26 +18,6 @@ server on AWS EC2 using Terraform and Ansible.
 - Accepts the EULA
 - Configures and enables a systemd service for auto-start and proper shutdown
 
-### Docker
-The Minecraft server is containerized using Docker. The `Dockerfile` in the root
-of the repository builds an image based on Ubuntu 24.04 that installs Java 25,
-downloads the Minecraft server jar, accepts the EULA, and runs the server on
-port 25565.
-
-The image is pushed to Amazon ECR and can be built and pushed with the following
-commands:
-```
-docker build -t minecraft-server .
-
-aws ecr create-repository --repository-name minecraft-server --region us-east-1
-
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-1.amazonaws.com
-
-docker tag minecraft-server:latest <repositoryUri>:latest 
-docker push <repositoryUri>:latest
-```
-Replace the placeholders `<account-id>` and `<repositoryUri>` with the actual account ID and repository URI you get from the output after you created the ECR repository.
-
 ## Requirements
 | Tool | Version |
 |------|---------|
@@ -45,6 +25,7 @@ Replace the placeholders `<account-id>` and `<repositoryUri>` with the actual ac
 | Ansible | 2.9 or greater |
 | AWS CLI | 2.0 or greater |
 | nmap | any |
+| Docker | any |
 
 ### Credentials
 - An AWS Academy account with an active Learner Lab session (start the lab if you haven't already)
@@ -124,3 +105,24 @@ You should see output confirming Minecraft is running on port 25565. You can als
 - [Terraform AWS Provider Documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 - [Ansible Documentation](https://docs.ansible.com/)
 - [Minecraft Server Download](https://www.minecraft.net/en-us/download/server)
+
+## Extra Credit - Miscellaneous
+### Docker
+The Minecraft server is containerized using Docker. The `Dockerfile` in the root
+of the repository builds an image based on Ubuntu 24.04 that installs Java 25,
+downloads the Minecraft server jar, accepts the EULA, and runs the server on
+port 25565.
+
+The image is pushed to Amazon ECR and can be built and pushed with the following
+commands:
+```
+docker build -t minecraft-server .
+
+aws ecr create-repository --repository-name minecraft-server --region us-east-1
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-1.amazonaws.com
+
+docker tag minecraft-server:latest <repositoryUri>:latest 
+docker push <repositoryUri>:latest
+```
+Replace the placeholders `<account-id>` and `<repositoryUri>` with the actual account ID and repository URI you get from the output after you created the ECR repository.
